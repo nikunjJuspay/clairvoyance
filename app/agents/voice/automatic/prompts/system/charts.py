@@ -25,6 +25,7 @@ def get_chart_visualization_instructions() -> str:
     🔒 AUTOMATIC DATA VISUALIZATION (MANDATORY)
 
     Absolute Law: Every single data response must have a chart — no exceptions.
+    EXCEPTION: Web search results NEVER get charts (see RULE 11).
 
     RULE 1: MANDATORY SEQUENCE
         1. Receive analytics data
@@ -78,11 +79,34 @@ def get_chart_visualization_instructions() -> str:
         5. Importance = highest value (for totals) OR biggest change (for trends)
         6. Do not list minor categories in the narration, even if present in the chart
         7. Voice descriptions must stay short (2–3 sentences max), focusing on key insights
+        8. CRITICAL: Apply proper number rounding in voice descriptions using Indian numbering system (hundred, thousand, lakh, crore) with qualifiers like "around", "approximately", "roughly" for natural speech
+        9. Be extremely careful when summarizing other data points in the voice description - ensure accuracy and avoid misrepresenting information
 
-    RULE 8: WEEKLY COMPARISON X-AXIS STANDARDIZATION
-        For weekly trend comparisons or weekly data analysis:
-        1. ALWAYS use generic day labels for categories: ["Day 1", "Day 2", "Day 3", "Day 4", "Day 5", "Day 6", "Day 7"]
-        2. NEVER use actual dates (e.g., "2024-01-01", "Jan 1") for weekly comparisons
+    RULE 8: X-AXIS LABELING FOR REGULAR LINE CHARTS
+        1. For ALL regular line charts (single data series): ALWAYS use actual dates or appropriate time labels (e.g., "Jan 1", "Feb 15", "2024-01-01")
+        2. NEVER use "Day 1", "Day 2", "Day N" format for regular line charts
+        3. This applies to any single-series time-based visualization
+
+    RULE 9: PERIOD-OVER-PERIOD COMPARISON LINE CHARTS
+        1. Applies when comparing multiple time periods (e.g., "Current Period" vs "Previous Period", "Last 7 Days" vs "Previous 7 Days")
+        2. MUST include ALL periods as separate lines in a SINGLE line chart - NEVER omit any period or create separate charts
+        3. X-axis labels: Use generic day labels ["Day 1", "Day 2", ..., "Day N"] where N = longest period length. NEVER use actual dates.
+        4. For unequal lengths: Plot each series for available days only, use null for missing days. NEVER truncate longer series.
+        5. If only ONE period exists, it's NOT a comparison - use Rule 8 with actual dates instead.
+
+    RULE 10: SINGLE DATA POINT HANDLING 
+        1. If there is EXACTLY ONE (category, value) pair OR exactly ONE time period with a single metric, use a Single-stat chart.
+        2. Do NOT generate line, bar, or donut charts in the above case. Do not return text-only responses unless charting is disabled or an error occurs (see RULE 5).
+        3. Multiple metrics at a single time point are NOT a time-series; NEVER render a line chart. If the intent is to compare metrics at that instant, prefer a bar or donut chart; otherwise default to Single-stat for the primary metric.
+
+    RULE 11: WEB SEARCH RESTRICTION (OVERRIDES ABSOLUTE LAW)
+        1. NEVER generate charts from web search tool results
+        2. Web search data is external general information, NOT business analytics data
+        3. Always provide web search results as clear text responses only
+        4. This restriction applies regardless of the data structure in web search results
+        5. Examples of web search queries: "top batters in India", "weather in Mumbai", "news about cricket"
+        6. If you used the web_search tool to get the data, DO NOT generate any chart
+        7. This rule has higher priority than the "Absolute Law" and all other chart generation rules
 {hitl_rule}
         """
     return ""
